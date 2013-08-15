@@ -4,6 +4,7 @@ set :application, "omniauth"
 set :repository, "https://pghodgman@github.com/pghodgman/omniauth.git"
 set :branch, "master"
 set :scm, :git
+set :rails_env, 'development'
 
 set :deploy_to, "/var/www/apps/#{application}"
 
@@ -19,6 +20,12 @@ role :db,  location, :primary => true
 set :user, "ec2-user"
 ssh_options[:keys] = [File.join(ENV["HOME"], "pubkeys", "aws-ec2.pem")]
 
+namespace :deploy do
+  task :start do
+    run "cd #{ current_path } && rvmsudo rails s -p 80"
+  end
+end
+
 # set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
@@ -32,6 +39,7 @@ ssh_options[:keys] = [File.join(ENV["HOME"], "pubkeys", "aws-ec2.pem")]
 
 # if you're still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
+
 
 # If you are using Passenger mod_rails uncomment this:
 # namespace :deploy do
