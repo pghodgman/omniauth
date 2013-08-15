@@ -29,6 +29,8 @@ gem 'jbuilder', '~> 1.0.1'
 gem 'omniauth'
 gem 'omniauth-openid'
 
+gem 'execjs'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
