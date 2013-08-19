@@ -6,11 +6,11 @@ set :branch, "master"
 set :scm, :git
 set :rails_env, 'development'
 
-set :deploy_to, "/var/www/apps/#{application}"
+set :deploy_to, "/home/ec2-user/apps/#{application}"
 
 
 # The address of the remote host on EC2 (the Public DNS address)
-set :location, "ec2-23-22-160-105.compute-1.amazonaws.com"
+set :location, "ec2-184-72-69-129.compute-1.amazonaws.com"
 # setup some Capistrano roles
 role :app, location
 role :web, location
@@ -20,9 +20,19 @@ role :db,  location, :primary => true
 set :user, "ec2-user"
 ssh_options[:keys] = [File.join(ENV["HOME"], "pubkeys", "aws-ec2.pem")]
 
+
 namespace :deploy do
-  task :start do
-    run "cd #{ current_path } && rvmsudo rails s -p 80"
+  task :start, :roles => :app do
+    run "touch #{current_release}/tmp/restart.txt"
+  end
+
+  task :stop, :roles => :app do
+    # Do nothing.
+  end
+
+  desc "Restart Application"
+  task :restart, :roles => :app do
+    run "touch #{current_release}/tmp/restart.txt"
   end
 end
 
